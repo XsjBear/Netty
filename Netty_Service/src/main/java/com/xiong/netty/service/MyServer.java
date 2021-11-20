@@ -10,6 +10,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+/**
+ * @Descript:Netty服务端
+ * @author Xsj
+ */
 public class MyServer {
     public static void main(String[] args) throws Exception {
         //创建两个线程组 boosGroup、workerGroup
@@ -24,7 +28,7 @@ public class MyServer {
                 .channel(NioServerSocketChannel.class)
                 //设置线程队列得到连接个数    
                 .option(ChannelOption.SO_BACKLOG, 128)
-                //设置保持活动连接状态    
+                //设置保持活动连接状态
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 //使用匿名内部类的形式初始化通道对象    
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -40,6 +44,7 @@ public class MyServer {
             //对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         } finally {
+            // 优雅关闭
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
